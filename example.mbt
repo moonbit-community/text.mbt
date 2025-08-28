@@ -1,167 +1,194 @@
 ///|
-/// MoonBit Text 库使用示例
-/// 展示各种文本处理功能
+/// MoonBit Text 库测试示例
+/// 使用 inspect test 验证各种文本处理功能
 
 ///|
-/// 示例：字符串格式转换
-fn example_string_conversion() -> Unit {
-  println("=== 字符串格式转换示例 ===")
+/// 测试：字符串格式转换
+test "string_conversion_tests" {
   let original = "hello_world_example"
-  println("原始字符串: \{original}")
-  let camel = to_camel_case(original)
-  println("驼峰命名: \{camel}")
-  let kebab = to_kebab_case(original)
-  println("短横线命名: \{kebab}")
-  let pascal = to_pascal_case(original)
-  println("帕斯卡命名: \{pascal}")
-  let snake = to_snake_case(original)
-  println("下划线命名: \{snake}")
-  println("")
+
+  // 测试各种格式转换
+  inspect(to_camel_case(original), content="helloWorldExample")
+  inspect(to_kebab_case(original), content="hello-world-example")
+  inspect(to_pascal_case(original), content="HelloWorldExample")
+  inspect(to_snake_case(original), content="hello_world_example")
+
+  // 测试空字符串
+  inspect(to_camel_case(""), content="")
+  inspect(to_kebab_case(""), content="")
+  inspect(to_pascal_case(""), content="")
+  inspect(to_snake_case(""), content="")
+
+  // 测试单个单词
+  inspect(to_camel_case("hello"), content="hello")
+  inspect(to_pascal_case("hello"), content="Hello")
 }
 
 ///|
-/// 示例：复杂字符串转换
-fn example_complex_conversion() -> Unit {
-  println("=== 复杂字符串转换示例 ===")
+/// 测试：复杂字符串转换
+test "complex_conversion_tests" {
   let complex = "XMLHttpRequest"
-  println("原始字符串: \{complex}")
+
+  // 测试单词分割
   let words = split_to_words(complex)
-  let mut word_str = "分割后的单词: "
-  for i = 0; i < words.length(); i = i + 1 {
-    if i > 0 {
-      word_str = word_str + ", "
-    }
-    word_str = word_str + "\"\{words[i]}\""
-  }
-  println(word_str)
-  println("转换结果:")
-  println("  驼峰命名: \{to_camel_case(complex)}")
-  println("  短横线命名: \{to_kebab_case(complex)}")
-  println("  帕斯卡命名: \{to_pascal_case(complex)}")
-  println("  下划线命名: \{to_snake_case(complex)}")
-  println("")
+  inspect(
+    words,
+    content=(
+      #|["XML", "Http", "Request"]
+    ),
+  )
+
+  // 测试转换结果
+  inspect(to_camel_case(complex), content="xmlHttpRequest")
+  inspect(to_kebab_case(complex), content="xml-http-request")
+  inspect(to_pascal_case(complex), content="XmlHttpRequest")
+  inspect(to_snake_case(complex), content="xml_http_request")
+
+  // 测试其他复杂情况
+  inspect(to_camel_case("API_Version_2"), content="apiVersion2")
+  inspect(to_snake_case("getUserInfo"), content="get_user_info")
 }
 
 ///|
-/// 示例：字符串距离计算
-fn example_string_distance() -> Unit {
-  println("=== 字符串距离计算示例 ===")
-  let examples = [
-    ("hello", "hallo"),
-    ("kitten", "sitting"),
-    ("algorithm", "altruistic"),
-    ("", "abc"),
-    ("same", "same"),
-  ]
-  for pair in examples {
-    let (str1, str2) = pair
-    let distance = levenshtein_distance(str1, str2)
-    println("距离(\"\{str1}\", \"\{str2}\") = \{distance}")
-  }
-  println("")
+/// 测试：字符串距离计算
+test "string_distance_tests" {
+  // 测试基本距离计算
+  inspect(levenshtein_distance("hello", "hallo"), content="1")
+  inspect(levenshtein_distance("kitten", "sitting"), content="3")
+  inspect(levenshtein_distance("algorithm", "altruistic"), content="6")
+  inspect(levenshtein_distance("", "abc"), content="3")
+  inspect(levenshtein_distance("same", "same"), content="0")
+
+  // 测试边界情况
+  inspect(levenshtein_distance("", ""), content="0")
+  inspect(levenshtein_distance("a", ""), content="1")
+  inspect(levenshtein_distance("", "b"), content="1")
+  inspect(levenshtein_distance("a", "a"), content="0")
+  inspect(levenshtein_distance("a", "b"), content="1")
 }
 
 ///|
-/// 示例：相似度比较和排序
-fn example_similarity_sorting() -> Unit {
-  println("=== 相似度比较和排序示例 ===")
+/// 测试：相似度比较和排序
+test "similarity_sorting_tests" {
   let words = ["help", "hello", "world", "test", "hi", "heap", "heart"]
   let target = "hep"
-  println("候选单词: \{words}")
-  println("目标单词: \"\{target}\"")
   let sorted = sort_by_similarity(words, target, None)
-  println("按相似度排序:")
-  for i = 0; i < sorted.length(); i = i + 1 {
-    let distance = levenshtein_distance(target, sorted[i])
-    println("  \{i + 1}. \"\{sorted[i]}\" (距离: \{distance})")
-  }
-  println("")
+
+  // 验证排序结果（最相似的应该在前面）
+  inspect(sorted[0], content="help") // 距离为1
+  inspect(sorted[1], content="heap") // 距离为2
+
+  // 验证完整排序（可能的顺序）
+  inspect(sorted.length(), content="7")
+
+  // 测试空数组
+  let empty_words : Array[String] = []
+  let empty_sorted = sort_by_similarity(empty_words, target, None)
+  inspect(
+    empty_sorted,
+    content=(
+      #|[]
+    ),
+  )
 }
 
 ///|
-/// 示例：最接近字符串查找
-fn example_closest_string() -> Unit {
-  println("=== 最接近字符串查找示例 ===")
+/// 测试：最接近字符串查找
+test "closest_string_tests" {
   let candidates = ["length", "size", "width", "height", "help", "depth"]
-  let queries = ["hep", "len", "siz", "heigh"]
-  println("候选字符串: \{candidates}")
-  for query in queries {
-    let closest = closest_string_simple(query, candidates)
-    let distance = levenshtein_distance(query, closest)
-    println(
-      "查询 \"\{query}\" 的最接近匹配: \"\{closest}\" (距离: \{distance})",
-    )
-  }
-  println("")
 
-  // 查找多个最接近的字符串
+  // 测试单个最接近字符串查找
+  inspect(closest_string_simple("hep", candidates), content="help")
+  inspect(closest_string_simple("len", candidates), content="length")
+  inspect(closest_string_simple("siz", candidates), content="size")
+  inspect(closest_string_simple("heigh", candidates), content="height")
+
+  // 测试查找多个最接近的字符串
   let query = "hep"
   let top3 = closest_strings(query, candidates, 3, None)
-  println("查询 \"\{query}\" 的前3个最接近匹配:")
-  for i = 0; i < top3.length(); i = i + 1 {
-    let distance = levenshtein_distance(query, top3[i])
-    println("  \{i + 1}. \"\{top3[i]}\" (距离: \{distance})")
-  }
-  println("")
+  inspect(top3[0], content="help")
+  inspect(top3.length(), content="3")
+
+  // 测试大小写不敏感
+  let mixed_case = ["Help", "HELLO", "world"]
+  inspect(closest_string_simple("help", mixed_case), content="Help")
+
+  // 测试区分大小写选项
+  let opts = case_sensitive_closest_string_options()
+  let case_sensitive_result = closest_string("Help", mixed_case, Some(opts))
+  inspect(case_sensitive_result, content="Help")
 }
 
 ///|
-/// 示例：实际应用场景
-fn example_real_world_usage() -> Unit {
-  println("=== 实际应用场景示例 ===")
-
-  // 1. API 命名转换
-  println("1. API 命名转换:")
+/// 测试：实际应用场景
+test "real_world_usage_tests" {
+  // 1. API 命名转换测试
   let api_functions = ["getUserProfile", "createNewPost", "deleteOldFiles"]
-  for func in api_functions {
-    println("  \{func} -> \{to_snake_case(func)} (数据库风格)")
-    println("  \{func} -> \{to_kebab_case(func)} (URL 风格)")
-  }
-  println("")
+  inspect(to_snake_case(api_functions[0]), content="get_user_profile")
+  inspect(to_kebab_case(api_functions[0]), content="get-user-profile")
+  inspect(to_snake_case(api_functions[1]), content="create_new_post")
+  inspect(to_kebab_case(api_functions[1]), content="create-new-post")
+  inspect(to_snake_case(api_functions[2]), content="delete_old_files")
+  inspect(to_kebab_case(api_functions[2]), content="delete-old-files")
 
-  // 2. 配置文件字段转换
-  println("2. 配置文件字段转换:")
+  // 2. 配置文件字段转换测试
   let config_fields = ["database_url", "max_connections", "timeout_seconds"]
-  for field in config_fields {
-    println("  \{field} -> \{to_camel_case(field)} (JavaScript 风格)")
-    println("  \{field} -> \{to_pascal_case(field)} (C# 风格)")
-  }
-  println("")
+  inspect(to_camel_case(config_fields[0]), content="databaseUrl")
+  inspect(to_pascal_case(config_fields[0]), content="DatabaseUrl")
+  inspect(to_camel_case(config_fields[1]), content="maxConnections")
+  inspect(to_pascal_case(config_fields[1]), content="MaxConnections")
+  inspect(to_camel_case(config_fields[2]), content="timeoutSeconds")
+  inspect(to_pascal_case(config_fields[2]), content="TimeoutSeconds")
 
-  // 3. 文件名相似度匹配（拼写错误修正）
-  println("3. 文件名相似度匹配（拼写错误修正）:")
+  // 3. 文件名相似度匹配（拼写错误修正）测试
   let files = ["index.html", "main.css", "app.js", "readme.txt", "config.json"]
   let typos = ["inde.html", "main.cs", "ap.js", "readm.txt"]
-  for typo in typos {
-    let suggestion = closest_string_simple(typo, files)
-    println("  输入错误: \"\{typo}\" -> 建议: \"\{suggestion}\"")
-  }
-  println("")
+  inspect(closest_string_simple(typos[0], files), content="index.html")
+  inspect(closest_string_simple(typos[1], files), content="main.css")
+  inspect(closest_string_simple(typos[2], files), content="app.js")
+  inspect(closest_string_simple(typos[3], files), content="readme.txt")
 }
 
 ///|
-/// 运行所有示例
-fn run_examples() -> Unit {
-  println("MoonBit Text 处理库功能演示")
-  println("================================")
-  println("")
-  example_string_conversion()
-  example_complex_conversion()
-  example_string_distance()
-  example_similarity_sorting()
-  example_closest_string()
-  example_real_world_usage()
-  println("所有示例运行完成！")
+/// 测试：边界条件和错误处理
+test "edge_cases_and_error_handling" {
+  // 测试空字符串输入
+  inspect(to_camel_case("   "), content="")
+  inspect(to_snake_case("   "), content="")
+
+  // 测试单字符
+  inspect(to_camel_case("a"), content="a")
+  inspect(to_pascal_case("a"), content="A")
+  inspect(to_kebab_case("A"), content="a")
+
+  // 测试数字和特殊字符
+  inspect(to_camel_case("test123code"), content="test123Code")
+  inspect(to_snake_case("test-123-code"), content="test_123_code")
+
+  // 测试已经是目标格式的字符串
+  inspect(to_camel_case("alreadyCamelCase"), content="alreadyCamelCase")
+  inspect(to_snake_case("already_snake_case"), content="already_snake_case")
+  inspect(to_kebab_case("already-kebab-case"), content="already-kebab-case")
+  inspect(to_pascal_case("AlreadyPascalCase"), content="AlreadyPascalCase")
 }
 
 ///|
-/// 测试示例函数
-test "example_functions_work" {
-  // 确保所有示例函数都能正常运行而不会崩溃
-  example_string_conversion()
-  example_complex_conversion()
-  example_string_distance()
-  example_similarity_sorting()
-  example_closest_string()
-  example_real_world_usage()
+/// 测试：性能相关的边界情况
+test "performance_edge_cases" {
+  // 测试长字符串
+  let long_string = "this_is_a_very_long_string_with_many_words_to_test_performance"
+  inspect(
+    to_camel_case(long_string),
+    content="thisIsAVeryLongStringWithManyWordsToTestPerformance",
+  )
+
+  // 测试重复模式
+  let repeated = "test_test_test"
+  inspect(to_camel_case(repeated), content="testTestTest")
+  inspect(to_pascal_case(repeated), content="TestTestTest")
+
+  // 测试相同长度的字符串距离
+  inspect(levenshtein_distance("abcd", "efgh"), content="4")
+  inspect(levenshtein_distance("abcd", "abcd"), content="0")
+  inspect(levenshtein_distance("abcd", "abce"), content="1")
 }
