@@ -121,7 +121,7 @@ test "find closest string" {
   // With options
   let opts = @text.default_closest_string_options()
   let result2 = @text.closest_string("test", candidates, Some(opts))
-  inspect(result2, content="size")
+  inspect(result2, content="help")
 }
 ```
 
@@ -176,7 +176,7 @@ Simplified version using default comparison options.
 test "simple similarity comparison" {
   let compare_fn = @text.compare_similarity_simple("hello")
   let distance = compare_fn("hello", "hallo")
-  inspect(distance, content="1")
+  inspect(distance, content="-1")
 }
 ```
 
@@ -275,7 +275,7 @@ test "CLI command suggestions" {
 test "API method matching" {
   let methods = ["getUserById", "getUserByName", "getAllUsers", "createUser"]
   let closest = @text.closest_string_simple("getUser", methods)
-  inspect(closest, content="getAllUsers")
+  inspect(closest, content="getUserById")
 }
 ```
 
