@@ -1,0 +1,57 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "myfreess/text"
+
+// Values
+fn capitalize_word(String) -> String
+
+fn case_sensitive_closest_string_options() -> ClosestStringOptions
+
+fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions
+
+fn closest_string(String, Array[String], ClosestStringOptions?) -> String
+
+fn closest_string_simple(String, Array[String]) -> String
+
+fn closest_strings(String, Array[String], Int, ClosestStringOptions?) -> Array[String]
+
+fn compare_similarity(String, CompareSimilarityOptions?) -> (String, String) -> Int
+
+fn compare_similarity_simple(String) -> (String, String) -> Int
+
+fn default_closest_string_options() -> ClosestStringOptions
+
+fn default_compare_similarity_options() -> CompareSimilarityOptions
+
+fn levenshtein_distance(String, String) -> Int
+
+fn sort_by_similarity(Array[String], String, CompareSimilarityOptions?) -> Array[String]
+
+fn split_to_words(String) -> Array[String]
+
+fn to_camel_case(String) -> String
+
+fn to_kebab_case(String) -> String
+
+fn to_lowercase_string(String) -> String
+
+fn to_pascal_case(String) -> String
+
+fn to_snake_case(String) -> String
+
+// Errors
+
+// Types and methods
+pub struct ClosestStringOptions {
+  case_sensitive : Bool
+  compare_fn : (String, String) -> Int
+}
+
+pub struct CompareSimilarityOptions {
+  case_sensitive : Bool
+  compare_fn : (String, String) -> Int
+}
+
+// Type aliases
+
+// Traits
+
