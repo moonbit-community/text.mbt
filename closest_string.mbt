@@ -147,7 +147,10 @@ test "closest_string_empty_array" {
   let err_msg = closest_string_simple("test", possible_words) catch {
     StringMatchingError(msg) => msg
   }
-  inspect(err_msg, content="When using closest_string(), the possible_words array must contain at least one word")
+  inspect(
+    err_msg,
+    content="When using closest_string(), the possible_words array must contain at least one word",
+  )
 }
 
 ///|
