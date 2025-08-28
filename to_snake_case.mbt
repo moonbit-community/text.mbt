@@ -1,17 +1,17 @@
 ///|
-/// 将字符串转换为下划线命名格式 (snake_case)
+/// Convert string to snake_case format
 /// 
-/// 下划线命名格式的特点是：
-/// - 所有字母都是小写
-/// - 单词之间用下划线 (_) 分隔
+/// Snake case format characteristics:
+/// - All letters are lowercase
+/// - Words are separated by underscores (_)
 
 ///|
-/// 将字符串转换为下划线命名格式
+/// Convert string to snake_case format
 /// 
-/// @param input 要转换的字符串
-/// @returns 转换后的下划线命名格式字符串
+/// * `input` - The string to convert
+/// + Returns the converted snake_case format string
 /// 
-/// # 示例
+/// # Examples
 /// ```
 /// let _ = to_snake_case("deno is awesome") // "deno_is_awesome"
 /// let _ = to_snake_case("helloWorld") // "hello_world"
@@ -34,7 +34,7 @@ pub fn to_snake_case(input : String) -> String {
 }
 
 ///|
-/// 测试
+/// Tests
 test "to_snake_case" {
   assert_eq(to_snake_case("deno is awesome"), "deno_is_awesome")
   assert_eq(to_snake_case("helloWorld"), "hello_world")

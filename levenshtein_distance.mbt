@@ -1,21 +1,21 @@
 ///|
-/// Levenshtein 距离算法实现
+/// Levenshtein distance algorithm implementation
 /// 
-/// 计算两个字符串之间的 Levenshtein 距离（编辑距离）
-/// 这是两个字符串之间的最小编辑操作数（插入、删除、替换）
+/// Calculate the Levenshtein distance (edit distance) between two strings
+/// This is the minimum number of edit operations (insert, delete, replace) between two strings
 
 ///|
-/// 计算两个字符串之间的 Levenshtein 距离
+/// Calculate the Levenshtein distance between two strings
 /// 
-/// Levenshtein 距离是两个字符串之间的最小编辑操作数（插入、删除、替换）
-/// 注意：此函数的复杂度是 O(m * n)，其中 m 和 n 是两个字符串的长度
-/// 建议限制输入长度并在接受任意输入时验证输入
+/// Levenshtein distance is the minimum number of edit operations (insert, delete, replace) between two strings
+/// Note: This function has O(m * n) complexity, where m and n are the lengths of the two strings
+/// It is recommended to limit input length and validate input when accepting arbitrary input
 /// 
-/// @param str1 第一个字符串
-/// @param str2 第二个字符串  
-/// @returns 两个字符串之间的 Levenshtein 距离
+/// * `str1` - The first string
+/// * `str2` - The second string
+/// + Returns the Levenshtein distance between the two strings
 /// 
-/// # 示例
+/// # Examples
 /// ```
 /// let _ = levenshtein_distance("aa", "bb") // returns 2
 /// let _ = levenshtein_distance("hello", "hallo") // returns 1
@@ -24,7 +24,7 @@ pub fn levenshtein_distance(str1 : String, str2 : String) -> Int {
   let t = str1.to_array()
   let p = str2.to_array()
 
-  // 使用较短的字符串作为 p，以优化空间复杂度
+  // Use the shorter string as p to optimize space complexity
   if t.length() < p.length() {
     return levenshtein_distance_impl(p, t)
   } else {
@@ -33,8 +33,8 @@ pub fn levenshtein_distance(str1 : String, str2 : String) -> Int {
 }
 
 ///|
-/// Levenshtein 距离的具体实现
-/// 使用动态规划算法
+/// Concrete implementation of Levenshtein distance
+/// Uses dynamic programming algorithm
 fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int {
   let n = t.length()
   let m = p.length()
@@ -42,7 +42,7 @@ fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int {
     return n
   }
 
-  // 对于较短的字符串，使用简化的实现
+  // For shorter strings, use simplified implementation
   if m <= 32 {
     return myers32(t, p)
   } else {
@@ -51,13 +51,13 @@ fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int {
 }
 
 ///|
-/// Myers 算法实现（适用于短字符串）
-/// 这是基于位向量的 Myers 算法实现
+/// Myers algorithm implementation (suitable for short strings)
+/// This is a bit-vector based Myers algorithm implementation
 fn myers32(t : Array[Char], p : Array[Char]) -> Int {
   let n = t.length()
   let m = p.length()
 
-  // 初始化 peq 数组
+  // Initialize peq array
   let peq = Array::make(0x110000, 0)
   for i = 0; i < m; i = i + 1 {
     let code = p[i].to_int()
@@ -75,14 +75,14 @@ fn myers32(t : Array[Char], p : Array[Char]) -> Int {
     let mut mh = pv & xh
     score = score + ((ph >> last) & 1) - ((mh >> last) & 1)
 
-    // 设置第一行的水平增量为 +1
+    // Set horizontal increment of first row to +1
     ph = (ph << 1) | 1
     mh = mh << 1
     pv = mh | (xv | ph).lnot()
     mv = ph & xv
   }
 
-  // 清理 peq 数组
+  // Clean up peq array
   for i = 0; i < m; i = i + 1 {
     peq[p[i].to_int()] = 0
   }
@@ -90,16 +90,16 @@ fn myers32(t : Array[Char], p : Array[Char]) -> Int {
 }
 
 ///|
-/// 经典的动态规划 Levenshtein 距离算法
+/// Classic dynamic programming Levenshtein distance algorithm
 fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int {
   let n = t.length()
   let m = p.length()
 
-  // 创建距离矩阵，只需要两行就足够了
+  // Create distance matrix, only two rows are sufficient
   let mut prev_row = Array::make(m + 1, 0)
   let mut curr_row = Array::make(m + 1, 0)
 
-  // 初始化第一行
+  // Initialize first row
   for j = 0; j <= m; j = j + 1 {
     prev_row[j] = j
   }
@@ -113,7 +113,7 @@ fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int {
       curr_row[j] = min3(delete_cost, insert_cost, substitute_cost)
     }
 
-    // 交换行
+    // Swap rows
     let temp = prev_row
     prev_row = curr_row
     curr_row = temp
@@ -122,7 +122,7 @@ fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int {
 }
 
 ///|
-/// 计算三个数的最小值
+/// Calculate the minimum of three numbers
 fn min3(a : Int, b : Int, c : Int) -> Int {
   let temp = if a < b { a } else { b }
   if temp < c {
@@ -133,7 +133,7 @@ fn min3(a : Int, b : Int, c : Int) -> Int {
 }
 
 ///|
-/// 测试
+/// Tests
 test "levenshtein_distance_basic" {
   assert_eq(levenshtein_distance("", ""), 0)
   assert_eq(levenshtein_distance("", "abc"), 3)

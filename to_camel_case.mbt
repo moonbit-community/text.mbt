@@ -1,18 +1,18 @@
 ///|
-/// 将字符串转换为驼峰命名格式 (camelCase)
+/// Convert string to camelCase format
 /// 
-/// 驼峰命名格式的特点是：
-/// - 第一个单词全小写
-/// - 后续单词首字母大写，其余小写
-/// - 单词之间没有分隔符
+/// CamelCase format characteristics:
+/// - First word is all lowercase
+/// - Subsequent words have their first letter capitalized, rest lowercase
+/// - No separators between words
 
 ///|
-/// 将字符串转换为驼峰命名格式
+/// Convert string to camelCase format
 /// 
-/// @param input 要转换的字符串
-/// @returns 转换后的驼峰命名格式字符串
+/// * `input` - The string to convert
+/// + Returns the converted camelCase format string
 /// 
-/// # 示例
+/// # Examples
 /// ```
 /// let _ = to_camel_case("deno is awesome") // "denoIsAwesome"
 /// let _ = to_camel_case("hello_world") // "helloWorld"
@@ -35,7 +35,7 @@ pub fn to_camel_case(input : String) -> String {
 }
 
 ///|
-/// 测试
+/// Tests
 test "to_camel_case" {
   assert_eq(to_camel_case("deno is awesome"), "denoIsAwesome")
   assert_eq(to_camel_case("hello_world"), "helloWorld")

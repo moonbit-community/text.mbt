@@ -1,18 +1,18 @@
 ///|
-/// 将字符串转换为帕斯卡命名格式 (PascalCase)
+/// Convert string to PascalCase format
 /// 
-/// 帕斯卡命名格式的特点是：
-/// - 每个单词的首字母都大写
-/// - 其余字母小写
-/// - 单词之间没有分隔符
+/// PascalCase format characteristics:
+/// - First letter of each word is capitalized
+/// - Other letters are lowercase
+/// - No separators between words
 
 ///|
-/// 将字符串转换为帕斯卡命名格式
+/// Convert string to PascalCase format
 /// 
-/// @param input 要转换的字符串
-/// @returns 转换后的帕斯卡命名格式字符串
+/// * `input` - The string to convert
+/// + Returns the converted PascalCase format string
 /// 
-/// # 示例
+/// # Examples
 /// ```
 /// let _ = to_pascal_case("deno is awesome") // "DenoIsAwesome"
 /// let _ = to_pascal_case("hello_world") // "HelloWorld"
@@ -32,7 +32,7 @@ pub fn to_pascal_case(input : String) -> String {
 }
 
 ///|
-/// 测试
+/// Tests
 test "to_pascal_case" {
   assert_eq(to_pascal_case("deno is awesome"), "DenoIsAwesome")
   assert_eq(to_pascal_case("hello_world"), "HelloWorld")

@@ -1,35 +1,35 @@
 ///|
-/// MoonBit Text 库测试示例
-/// 使用 inspect test 验证各种文本处理功能
+/// MoonBit Text library test examples
+/// Use inspect test to verify various text processing functions
 
 ///|
-/// 测试：字符串格式转换
+/// Test: String format conversion
 test "string_conversion_tests" {
   let original = "hello_world_example"
 
-  // 测试各种格式转换
+  // Test various format conversions
   inspect(to_camel_case(original), content="helloWorldExample")
   inspect(to_kebab_case(original), content="hello-world-example")
   inspect(to_pascal_case(original), content="HelloWorldExample")
   inspect(to_snake_case(original), content="hello_world_example")
 
-  // 测试空字符串
+  // Test empty string
   inspect(to_camel_case(""), content="")
   inspect(to_kebab_case(""), content="")
   inspect(to_pascal_case(""), content="")
   inspect(to_snake_case(""), content="")
 
-  // 测试单个单词
+  // Test single word
   inspect(to_camel_case("hello"), content="hello")
   inspect(to_pascal_case("hello"), content="Hello")
 }
 
 ///|
-/// 测试：复杂字符串转换
+/// Test: Complex string conversion
 test "complex_conversion_tests" {
   let complex = "XMLHttpRequest"
 
-  // 测试单词分割
+  // Test word splitting
   let words = split_to_words(complex)
   inspect(
     words,
@@ -38,28 +38,28 @@ test "complex_conversion_tests" {
     ),
   )
 
-  // 测试转换结果
+  // Test conversion results
   inspect(to_camel_case(complex), content="xmlHttpRequest")
   inspect(to_kebab_case(complex), content="xml-http-request")
   inspect(to_pascal_case(complex), content="XmlHttpRequest")
   inspect(to_snake_case(complex), content="xml_http_request")
 
-  // 测试其他复杂情况
+  // Test other complex cases
   inspect(to_camel_case("API_Version_2"), content="apiVersion2")
   inspect(to_snake_case("getUserInfo"), content="get_user_info")
 }
 
 ///|
-/// 测试：字符串距离计算
+/// Test: String distance calculation
 test "string_distance_tests" {
-  // 测试基本距离计算
+  // Test basic distance calculation
   inspect(levenshtein_distance("hello", "hallo"), content="1")
   inspect(levenshtein_distance("kitten", "sitting"), content="3")
   inspect(levenshtein_distance("algorithm", "altruistic"), content="6")
   inspect(levenshtein_distance("", "abc"), content="3")
   inspect(levenshtein_distance("same", "same"), content="0")
 
-  // 测试边界情况
+  // Test edge cases
   inspect(levenshtein_distance("", ""), content="0")
   inspect(levenshtein_distance("a", ""), content="1")
   inspect(levenshtein_distance("", "b"), content="1")
@@ -68,20 +68,20 @@ test "string_distance_tests" {
 }
 
 ///|
-/// 测试：相似度比较和排序
+/// Test: Similarity comparison and sorting
 test "similarity_sorting_tests" {
   let words = ["help", "hello", "world", "test", "hi", "heap", "heart"]
   let target = "hep"
   let sorted = sort_by_similarity(words, target, None)
 
-  // 验证排序结果（最相似的应该在前面）
-  inspect(sorted[0], content="help") // 距离为1
-  inspect(sorted[1], content="heap") // 距离为2
+  // Verify sorting results (most similar should be first)
+  inspect(sorted[0], content="help") // distance is 1
+  inspect(sorted[1], content="heap") // distance is 2
 
-  // 验证完整排序（可能的顺序）
+  // Verify complete sorting (possible order)
   inspect(sorted.length(), content="7")
 
-  // 测试空数组
+  // Test empty array
   let empty_words : Array[String] = []
   let empty_sorted = sort_by_similarity(empty_words, target, None)
   inspect(
@@ -93,36 +93,36 @@ test "similarity_sorting_tests" {
 }
 
 ///|
-/// 测试：最接近字符串查找
+/// Test: Closest string search
 test "closest_string_tests" {
   let candidates = ["length", "size", "width", "height", "help", "depth"]
 
-  // 测试单个最接近字符串查找
+  // Test single closest string search
   inspect(closest_string_simple("hep", candidates), content="help")
   inspect(closest_string_simple("len", candidates), content="length")
   inspect(closest_string_simple("siz", candidates), content="size")
   inspect(closest_string_simple("heigh", candidates), content="height")
 
-  // 测试查找多个最接近的字符串
+  // Test searching for multiple closest strings
   let query = "hep"
   let top3 = closest_strings(query, candidates, 3, None)
   inspect(top3[0], content="help")
   inspect(top3.length(), content="3")
 
-  // 测试大小写不敏感
+  // Test case insensitive
   let mixed_case = ["Help", "HELLO", "world"]
   inspect(closest_string_simple("help", mixed_case), content="Help")
 
-  // 测试区分大小写选项
+  // Test case sensitive option
   let opts = case_sensitive_closest_string_options()
   let case_sensitive_result = closest_string("Help", mixed_case, Some(opts))
   inspect(case_sensitive_result, content="Help")
 }
 
 ///|
-/// 测试：实际应用场景
+/// Test: Real world usage scenarios
 test "real_world_usage_tests" {
-  // 1. API 命名转换测试
+  // 1. API naming conversion test
   let api_functions = ["getUserProfile", "createNewPost", "deleteOldFiles"]
   inspect(to_snake_case(api_functions[0]), content="get_user_profile")
   inspect(to_kebab_case(api_functions[0]), content="get-user-profile")
@@ -131,7 +131,7 @@ test "real_world_usage_tests" {
   inspect(to_snake_case(api_functions[2]), content="delete_old_files")
   inspect(to_kebab_case(api_functions[2]), content="delete-old-files")
 
-  // 2. 配置文件字段转换测试
+  // 2. Configuration field conversion test
   let config_fields = ["database_url", "max_connections", "timeout_seconds"]
   inspect(to_camel_case(config_fields[0]), content="databaseUrl")
   inspect(to_pascal_case(config_fields[0]), content="DatabaseUrl")
@@ -140,7 +140,7 @@ test "real_world_usage_tests" {
   inspect(to_camel_case(config_fields[2]), content="timeoutSeconds")
   inspect(to_pascal_case(config_fields[2]), content="TimeoutSeconds")
 
-  // 3. 文件名相似度匹配（拼写错误修正）测试
+  // 3. File name similarity matching (typo correction) test
   let files = ["index.html", "main.css", "app.js", "readme.txt", "config.json"]
   let typos = ["inde.html", "main.cs", "ap.js", "readm.txt"]
   inspect(closest_string_simple(typos[0], files), content="index.html")
@@ -150,22 +150,22 @@ test "real_world_usage_tests" {
 }
 
 ///|
-/// 测试：边界条件和错误处理
+/// Test: Edge cases and error handling
 test "edge_cases_and_error_handling" {
-  // 测试空字符串输入
+  // Test empty string input
   inspect(to_camel_case("   "), content="")
   inspect(to_snake_case("   "), content="")
 
-  // 测试单字符
+  // Test single character
   inspect(to_camel_case("a"), content="a")
   inspect(to_pascal_case("a"), content="A")
   inspect(to_kebab_case("A"), content="a")
 
-  // 测试数字和特殊字符
+  // Test numbers and special characters
   inspect(to_camel_case("test123code"), content="test123Code")
   inspect(to_snake_case("test-123-code"), content="test_123_code")
 
-  // 测试已经是目标格式的字符串
+  // Test strings already in target format
   inspect(to_camel_case("alreadyCamelCase"), content="alreadyCamelCase")
   inspect(to_snake_case("already_snake_case"), content="already_snake_case")
   inspect(to_kebab_case("already-kebab-case"), content="already-kebab-case")
@@ -173,21 +173,21 @@ test "edge_cases_and_error_handling" {
 }
 
 ///|
-/// 测试：性能相关的边界情况
+/// Test: Performance-related edge cases
 test "performance_edge_cases" {
-  // 测试长字符串
+  // Test long string
   let long_string = "this_is_a_very_long_string_with_many_words_to_test_performance"
   inspect(
     to_camel_case(long_string),
     content="thisIsAVeryLongStringWithManyWordsToTestPerformance",
   )
 
-  // 测试重复模式
+  // Test repeated patterns
   let repeated = "test_test_test"
   inspect(to_camel_case(repeated), content="testTestTest")
   inspect(to_pascal_case(repeated), content="TestTestTest")
 
-  // 测试相同长度的字符串距离
+  // Test distance of same-length strings
   inspect(levenshtein_distance("abcd", "efgh"), content="4")
   inspect(levenshtein_distance("abcd", "abcd"), content="0")
   inspect(levenshtein_distance("abcd", "abce"), content="1")

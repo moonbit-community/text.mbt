@@ -1,23 +1,23 @@
 ///|
-/// 字符串相似度比较功能
+/// String similarity comparison functionality
 /// 
-/// 提供基于字符串距离算法的相似度比较功能
-/// 默认使用 Levenshtein 距离算法
+/// Provides similarity comparison functionality based on string distance algorithms
+/// Uses Levenshtein distance algorithm by default
 
 ///|
-/// 相似度比较选项
+/// Similarity comparison options
 pub struct CompareSimilarityOptions {
-  /// 是否区分大小写
-  /// 默认值: false
+  /// Whether to be case sensitive
+  /// Default value: false
   case_sensitive : Bool
-  /// 自定义比较函数
-  /// 参数: (a, b) -> 两个字符串之间的距离
-  /// 默认值: levenshtein_distance
+  /// Custom comparison function
+  /// Parameters: (a, b) -> distance between two strings
+  /// Default value: levenshtein_distance
   compare_fn : (String, String) -> Int
 }
 
 ///|
-/// 创建默认的相似度比较选项
+/// Create default similarity comparison options
 pub fn default_compare_similarity_options() -> CompareSimilarityOptions {
   CompareSimilarityOptions::{
     case_sensitive: false,
@@ -26,7 +26,7 @@ pub fn default_compare_similarity_options() -> CompareSimilarityOptions {
 }
 
 ///|
-/// 创建区分大小写的相似度比较选项
+/// Create case-sensitive similarity comparison options
 pub fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions {
   CompareSimilarityOptions::{
     case_sensitive: true,
@@ -35,21 +35,21 @@ pub fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions {
 }
 
 ///|
-/// 获取字符串相似度比较函数
+/// Get string similarity comparison function
 /// 
-/// 生成一个比较器函数，用于确定两个字符串中哪个与给定字符串更相似
-/// 默认使用 Levenshtein 距离算法计算单词之间的距离
+/// Generate a comparator function to determine which of two strings is more similar to a given string
+/// Uses Levenshtein distance algorithm by default to calculate distance between words
 /// 
-/// @param given_word 用于测量距离的字符串
-/// @param options 比较选项
-/// @returns 比较器函数，如果 a 比 b 更相似返回负数，如果 b 更相似返回正数，相同返回 0
+/// * `given_word` - The string for measuring distance
+/// * `options` - Comparison options
+/// + Returns a comparator function that returns negative if a is more similar than b, positive if b is more similar, 0 if same
 /// 
-/// # 示例
-/// 最相似的单词将排在数组的前面
+/// # Examples
+/// Most similar words will be sorted at the front of the array
 /// ```
 /// let words = ["hi", "hello", "help"]
 /// let sorted_words = sort_by_similarity(words, "hep", None)
-/// // sorted_words 将是 ["help", "hi", "hello"]
+/// // sorted_words will be ["help", "hi", "hello"]
 /// ```
 pub fn compare_similarity(
   given_word : String,
@@ -75,7 +75,7 @@ pub fn compare_similarity(
 }
 
 ///|
-/// 使用默认选项的简化版本
+/// Simplified version using default options
 pub fn compare_similarity_simple(
   given_word : String,
 ) -> (String, String) -> Int {
@@ -83,12 +83,12 @@ pub fn compare_similarity_simple(
 }
 
 ///|
-/// 按相似度对字符串数组进行排序
+/// Sort string array by similarity
 /// 
-/// @param words 要排序的字符串数组
-/// @param given_word 用于比较相似度的基准字符串
-/// @param options 比较选项
-/// @returns 按相似度排序后的新数组（相似度高的在前面）
+/// * `words` - The string array to sort
+/// * `given_word` - The reference string for similarity comparison
+/// * `options` - Comparison options
+/// + Returns a new array sorted by similarity (higher similarity first)
 pub fn sort_by_similarity(
   words : Array[String],
   given_word : String,
@@ -100,7 +100,7 @@ pub fn sort_by_similarity(
     sorted_words.push(word)
   }
 
-  // 简单的插入排序
+  // Simple insertion sort
   for i = 1; i < sorted_words.length(); i = i + 1 {
     let key = sorted_words[i]
     let mut j = i - 1
@@ -114,17 +114,17 @@ pub fn sort_by_similarity(
 }
 
 ///|
-/// 测试
+/// Tests
 test "compare_similarity_basic" {
   let cmp = compare_similarity_simple("hep")
 
-  // "help" 应该比 "hello" 更相似于 "hep"
+  // "help" should be more similar to "hep" than "hello"
   assert_true(cmp("help", "hello") < 0)
 
-  // "hi" 应该比 "hello" 更相似于 "hep"  
+  // "hi" should be more similar to "hep" than "hello"
   assert_true(cmp("hi", "hello") < 0)
 
-  // 相同字符串应该距离为 0
+  // Same strings should have distance 0
   assert_eq(cmp("test", "test"), 0)
 }
 
@@ -133,7 +133,7 @@ test "compare_similarity_case_sensitive" {
   let opts = case_sensitive_compare_similarity_options()
   let cmp = compare_similarity("Test", Some(opts))
 
-  // 区分大小写时，"Test" 应该比 "test" 更相似于 "Test"
+  // When case sensitive, "Test" should be more similar to "Test" than "test"
   assert_true(cmp("Test", "test") < 0)
 }
 
@@ -142,15 +142,15 @@ test "sort_by_similarity" {
   let words = ["hi", "hello", "help"]
   let sorted = sort_by_similarity(words, "hep", None)
 
-  // "help" 应该是最相似的
+  // "help" should be most similar
   assert_eq(sorted[0], "help")
 
-  // 原数组不应该被修改
+  // Original array should not be modified
   assert_eq(words, ["hi", "hello", "help"])
 }
 
 ///|
-/// 辅助函数：断言布尔值为真
+/// Helper function: assert boolean value is true
 fn assert_true(value : Bool) -> Unit {
   if not(value) {
     abort("Expected true, got false")

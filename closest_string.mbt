@@ -1,23 +1,23 @@
 ///|
-/// 最接近字符串查找功能
+/// Closest string search functionality
 /// 
-/// 从字符串数组中找到与给定字符串最相似的字符串
-/// 默认使用 Levenshtein 距离算法
+/// Find the most similar string from a string array to a given string
+/// Uses Levenshtein distance algorithm by default
 
 ///|
-/// 最接近字符串查找选项
+/// Closest string search options
 pub struct ClosestStringOptions {
-  /// 是否区分大小写
-  /// 默认值: false
+  /// Whether to be case sensitive
+  /// Default value: false
   case_sensitive : Bool
-  /// 自定义比较函数
-  /// 参数: (a, b) -> 两个字符串之间的距离
-  /// 默认值: levenshtein_distance
+  /// Custom comparison function
+  /// Parameters: (a, b) -> distance between two strings
+  /// Default value: levenshtein_distance
   compare_fn : (String, String) -> Int
 }
 
 ///|
-/// 创建默认的最接近字符串查找选项
+/// Create default closest string search options
 pub fn default_closest_string_options() -> ClosestStringOptions {
   ClosestStringOptions::{
     case_sensitive: false,
@@ -26,7 +26,7 @@ pub fn default_closest_string_options() -> ClosestStringOptions {
 }
 
 ///|
-/// 创建区分大小写的最接近字符串查找选项
+/// Create case-sensitive closest string search options
 pub fn case_sensitive_closest_string_options() -> ClosestStringOptions {
   ClosestStringOptions::{
     case_sensitive: true,
@@ -35,21 +35,21 @@ pub fn case_sensitive_closest_string_options() -> ClosestStringOptions {
 }
 
 ///|
-/// 从字符串数组中找到最相似的字符串
+/// Find the most similar string from a string array
 /// 
-/// 默认使用 Levenshtein 距离算法计算单词之间的距离
+/// Uses Levenshtein distance algorithm by default to calculate distance between words
 /// 
-/// @param given_word 用于测量距离的字符串
-/// @param possible_words 候选字符串数组
-/// @param options 比较选项
-/// @returns 最接近的字符串
-/// @throws 如果 possible_words 数组为空
+/// * `given_word` - The string for measuring distance
+/// * `possible_words` - Array of candidate strings
+/// * `options` - Comparison options
+/// + Returns the closest string
+/// + Throws if the possible_words array is empty
 /// 
-/// # 示例
+/// # Examples
 /// ```mbt
 /// let possible_words = ["length", "size", "blah", "help"]
 /// let suggestion = closest_string("hep", possible_words, None)
-/// // suggestion 将是 "help"
+/// // suggestion will be "help"
 /// ```
 pub fn closest_string(
   given_word : String,
@@ -68,7 +68,7 @@ pub fn closest_string(
   let compare_fn = opts.compare_fn
   let case_sensitive = opts.case_sensitive
   let mut nearest_word = possible_words[0]
-  let mut closest_distance = 2147483647 // Int 最大值
+  let mut closest_distance = 2147483647 // Int max value
   for word in possible_words {
     let distance = if case_sensitive {
       compare_fn(given_word, word)
@@ -86,7 +86,7 @@ pub fn closest_string(
 }
 
 ///|
-/// 使用默认选项的简化版本
+/// Simplified version using default options
 pub fn closest_string_simple(
   given_word : String,
   possible_words : Array[String],
@@ -95,13 +95,13 @@ pub fn closest_string_simple(
 }
 
 ///|
-/// 查找多个最接近的字符串（返回前 n 个）
+/// Find multiple closest strings (return top n)
 /// 
-/// @param given_word 用于测量距离的字符串
-/// @param possible_words 候选字符串数组
-/// @param count 返回的最接近字符串数量
-/// @param options 比较选项
-/// @returns 按相似度排序的前 count 个字符串数组
+/// * `given_word` - The string for measuring distance
+/// * `possible_words` - Array of candidate strings
+/// * `count` - Number of closest strings to return
+/// * `options` - Comparison options
+/// + Returns an array of top count strings sorted by similarity
 pub fn closest_strings(
   given_word : String,
   possible_words : Array[String],
@@ -112,7 +112,7 @@ pub fn closest_strings(
     return []
   }
 
-  // 使用相似度排序功能
+  // Use similarity sorting functionality
   let compare_opts = match options {
     Some(opts) =>
       Some(CompareSimilarityOptions::{
@@ -131,7 +131,7 @@ pub fn closest_strings(
 }
 
 ///|
-/// 测试
+/// Tests
 test "closest_string_basic" {
   let possible_words = ["length", "size", "blah", "help"]
   let suggestion = closest_string_simple("hep", possible_words)
@@ -141,8 +141,8 @@ test "closest_string_basic" {
 ///|
 test "closest_string_empty_array" {
   let possible_words : Array[String] = []
-  // 这应该会抛出异常，我们需要用 try/catch 来测试
-  // 但在这个简单的测试中，我们只是跳过这个测试
+  // This should throw an exception, we need to use try/catch to test
+  // But in this simple test, we just skip this test
 }
 
 ///|
@@ -165,7 +165,7 @@ test "closest_strings_multiple" {
   let possible_words = ["help", "hello", "world", "test", "hi"]
   let suggestions = closest_strings("hep", possible_words, 3, None)
 
-  // 前三个最接近的应该包含 "help"
+  // The top three closest should include "help"
   assert_eq(suggestions[0], "help")
   assert_eq(suggestions.length(), 3)
 }

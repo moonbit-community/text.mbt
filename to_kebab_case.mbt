@@ -1,17 +1,17 @@
 ///|
-/// 将字符串转换为短横线命名格式 (kebab-case)
+/// Convert string to kebab-case format
 /// 
-/// 短横线命名格式的特点是：
-/// - 所有字母都是小写
-/// - 单词之间用短横线 (-) 分隔
+/// Kebab case format characteristics:
+/// - All letters are lowercase
+/// - Words are separated by hyphens (-)
 
 ///|
-/// 将字符串转换为短横线命名格式
+/// Convert string to kebab-case format
 /// 
-/// @param input 要转换的字符串
-/// @returns 转换后的短横线命名格式字符串
+/// * `input` - The string to convert
+/// + Returns the converted kebab-case format string
 /// 
-/// # 示例
+/// # Examples
 /// ```
 /// let _ = to_kebab_case("deno is awesome") // "deno-is-awesome"
 /// let _ = to_kebab_case("helloWorld") // "hello-world"
@@ -34,7 +34,7 @@ pub fn to_kebab_case(input : String) -> String {
 }
 
 ///|
-/// 测试
+/// Tests
 test "to_kebab_case" {
   assert_eq(to_kebab_case("deno is awesome"), "deno-is-awesome")
   assert_eq(to_kebab_case("helloWorld"), "hello-world")
