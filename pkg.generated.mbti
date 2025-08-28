@@ -8,9 +8,9 @@ fn case_sensitive_closest_string_options() -> ClosestStringOptions
 
 fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions
 
-fn closest_string(String, Array[String], ClosestStringOptions?) -> String
+fn closest_string(String, Array[String], ClosestStringOptions?) -> String raise StringMatchingError
 
-fn closest_string_simple(String, Array[String]) -> String
+fn closest_string_simple(String, Array[String]) -> String raise StringMatchingError
 
 fn closest_strings(String, Array[String], Int, ClosestStringOptions?) -> Array[String]
 
@@ -39,6 +39,7 @@ fn to_pascal_case(String) -> String
 fn to_snake_case(String) -> String
 
 // Errors
+pub suberror StringMatchingError String
 
 // Types and methods
 pub struct ClosestStringOptions {

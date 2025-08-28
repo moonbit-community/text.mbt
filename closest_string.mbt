@@ -35,6 +35,9 @@ pub fn case_sensitive_closest_string_options() -> ClosestStringOptions {
 }
 
 ///|
+pub suberror StringMatchingError String
+
+///|
 /// Find the most similar string from a string array
 /// 
 /// Uses Levenshtein distance algorithm by default to calculate distance between words
@@ -55,9 +58,9 @@ pub fn closest_string(
   given_word : String,
   possible_words : Array[String],
   options : ClosestStringOptions?,
-) -> String {
+) -> String raise StringMatchingError {
   if possible_words.length() == 0 {
-    abort(
+    raise StringMatchingError(
       "When using closest_string(), the possible_words array must contain at least one word",
     )
   }
@@ -90,7 +93,7 @@ pub fn closest_string(
 pub fn closest_string_simple(
   given_word : String,
   possible_words : Array[String],
-) -> String {
+) -> String raise StringMatchingError {
   closest_string(given_word, possible_words, None)
 }
 
@@ -141,8 +144,10 @@ test "closest_string_basic" {
 ///|
 test "closest_string_empty_array" {
   let possible_words : Array[String] = []
-  // This should throw an exception, we need to use try/catch to test
-  // But in this simple test, we just skip this test
+  let err_msg = closest_string_simple("test", possible_words) catch {
+    StringMatchingError(msg) => msg
+  }
+  inspect(err_msg, content="When using closest_string(), the possible_words array must contain at least one word")
 }
 
 ///|
