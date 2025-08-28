@@ -203,10 +203,10 @@ Splits a string into individual words, handling various separators and cases.
 ```moonbit
 test "word splitting" {
   let words = @text.split_to_words("hello_world-test")
-  inspect(words, content=["hello", "world", "test"])
+  @json.inspect(words, content=["hello", "world", "test"])
   
   let camel_words = @text.split_to_words("camelCaseExample")
-  inspect(camel_words, content=["camel", "Case", "Example"])
+  @json.inspect(camel_words, content=["camel", "Case", "Example"])
 }
 ```
 
