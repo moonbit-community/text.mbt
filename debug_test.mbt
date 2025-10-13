@@ -1,3 +1,4 @@
+///|
 test "debug split_to_words type" {
   let words = split_to_words("hello_world-test")
   println("First word: " + words[0])

@@ -27,6 +27,7 @@ moon add myfreess/text
 Converts a string to camelCase format where the first word is lowercase and subsequent words have their first letter capitalized.
 
 ```moonbit
+///|
 test "camelCase conversion" {
   inspect(@text.to_camel_case("hello world"), content="helloWorld")
   inspect(@text.to_camel_case("deno_is_awesome"), content="denoIsAwesome")
@@ -39,6 +40,7 @@ test "camelCase conversion" {
 Converts a string to PascalCase format where every word starts with a capital letter.
 
 ```moonbit
+///|
 test "PascalCase conversion" {
   inspect(@text.to_pascal_case("hello world"), content="HelloWorld")
   inspect(@text.to_pascal_case("my_variable_name"), content="MyVariableName")
@@ -50,6 +52,7 @@ test "PascalCase conversion" {
 Converts a string to snake_case format where words are separated by underscores and all lowercase.
 
 ```moonbit
+///|
 test "snake_case conversion" {
   inspect(@text.to_snake_case("Hello World"), content="hello_world")
   inspect(@text.to_snake_case("XMLHttpRequest"), content="xml_http_request")
@@ -61,6 +64,7 @@ test "snake_case conversion" {
 Converts a string to kebab-case format where words are separated by hyphens and all lowercase.
 
 ```moonbit
+///|
 test "kebab-case conversion" {
   inspect(@text.to_kebab_case("Hello World"), content="hello-world")
   inspect(@text.to_kebab_case("backgroundColor"), content="background-color")
@@ -74,6 +78,7 @@ test "kebab-case conversion" {
 Calculates the Levenshtein distance (edit distance) between two strings. This represents the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one string into another.
 
 ```moonbit
+///|
 test "Levenshtein distance calculation" {
   inspect(@text.levenshtein_distance("kitten", "sitting"), content="3")
   inspect(@text.levenshtein_distance("hello", "hallo"), content="1")
@@ -97,12 +102,13 @@ test "Levenshtein distance calculation" {
 #### Option Creators
 
 ```moonbit
+///|
 test "create matching options" {
   let default_opts = @text.default_closest_string_options()
   let case_opts = @text.case_sensitive_closest_string_options()
-  
   let similarity_opts = @text.default_compare_similarity_options()
   let case_similarity_opts = @text.case_sensitive_compare_similarity_options()
+
 }
 ```
 
@@ -111,13 +117,14 @@ test "create matching options" {
 Finds the most similar string from an array of candidates using the specified options.
 
 ```moonbit
+///|
 test "find closest string" {
   let candidates = ["length", "size", "help", "world"]
-  
+
   // Simple case - finds "help" as closest to "hep"
   let result = @text.closest_string_simple("hep", candidates)
   inspect(result, content="help")
-  
+
   // With options
   let opts = @text.default_closest_string_options()
   let result2 = @text.closest_string("test", candidates, Some(opts))
@@ -130,6 +137,7 @@ test "find closest string" {
 Simplified version of `closest_string` using default options.
 
 ```moonbit
+///|
 test "simple closest string matching" {
   let words = ["apple", "application", "apply", "apt"]
   let result = @text.closest_string_simple("app", words)
@@ -142,10 +150,11 @@ test "simple closest string matching" {
 Returns multiple closest matches sorted by similarity.
 
 ```moonbit
+///|
 test "multiple closest strings" {
   let candidates = ["help", "hello", "world", "test", "heap"]
   let top3 = @text.closest_strings("hep", candidates, 3, None)
-  
+
   // Should return top 3 matches sorted by similarity
   inspect(top3.length(), content="3")
   inspect(top3[0], content="help")
@@ -159,11 +168,11 @@ test "multiple closest strings" {
 Creates a comparison function for measuring similarity between strings.
 
 ```moonbit
+///|
 test "similarity comparison function" {
   let compare_fn = @text.compare_similarity("target", None)
   let distance1 = compare_fn("target", "test")
   let distance2 = compare_fn("target", "target")
-  
   inspect(distance2, content="0") // exact match
 }
 ```
@@ -173,6 +182,7 @@ test "similarity comparison function" {
 Simplified version using default comparison options.
 
 ```moonbit
+///|
 test "simple similarity comparison" {
   let compare_fn = @text.compare_similarity_simple("hello")
   let distance = compare_fn("hello", "hallo")
@@ -185,10 +195,11 @@ test "simple similarity comparison" {
 Sorts an array of strings by their similarity to a target string.
 
 ```moonbit
+///|
 test "sort by similarity" {
   let words = ["world", "help", "hello", "test"]
   let sorted = @text.sort_by_similarity(words, "hep", None)
-  
+
   // "help" should be first as it's most similar to "hep"
   inspect(sorted[0], content="help")
 }
@@ -201,10 +212,10 @@ test "sort by similarity" {
 Splits a string into individual words, handling various separators and cases.
 
 ```moonbit
+///|
 test "word splitting" {
   let words = @text.split_to_words("hello_world-test")
   @json.inspect(words, content=["hello", "world", "test"])
-  
   let camel_words = @text.split_to_words("camelCaseExample")
   @json.inspect(camel_words, content=["camel", "Case", "Example"])
 }
@@ -215,6 +226,7 @@ test "word splitting" {
 Capitalizes the first letter of a word while making the rest lowercase.
 
 ```moonbit
+///|
 test "word capitalization" {
   inspect(@text.capitalize_word("hello"), content="Hello")
   inspect(@text.capitalize_word("WORLD"), content="World")
@@ -227,6 +239,7 @@ test "word capitalization" {
 Converts a string to all lowercase letters.
 
 ```moonbit
+///|
 test "lowercase conversion" {
   inspect(@text.to_lowercase_string("Hello World"), content="hello world")
   inspect(@text.to_lowercase_string("TEST123"), content="test123")
@@ -238,15 +251,16 @@ test "lowercase conversion" {
 The library defines a custom error type `StringMatchingError` for operations that may fail:
 
 ```moonbit
+///|
 test "error handling" {
   let empty_array : Array[String] = []
-  let result = try {
-    @text.closest_string_simple("test", empty_array)
-  } catch {
+  let result = @text.closest_string_simple("test", empty_array) catch {
     @text.StringMatchingError(msg) => "Error: " + msg
   }
-  
-  inspect(result, content="Error: When using closest_string(), the possible_words array must contain at least one word")
+  inspect(
+    result,
+    content="Error: When using closest_string(), the possible_words array must contain at least one word",
+  )
 }
 ```
 
@@ -262,6 +276,7 @@ test "error handling" {
 ### Command Line Tool Suggestions
 
 ```moonbit
+///|
 test "CLI command suggestions" {
   let commands = ["install", "uninstall", "list", "search", "update"]
   let suggestion = @text.closest_string_simple("instal", commands)
@@ -272,6 +287,7 @@ test "CLI command suggestions" {
 ### API Method Name Matching
 
 ```moonbit
+///|
 test "API method matching" {
   let methods = ["getUserById", "getUserByName", "getAllUsers", "createUser"]
   let closest = @text.closest_string_simple("getUser", methods)
@@ -282,11 +298,11 @@ test "API method matching" {
 ### Variable Name Formatting
 
 ```moonbit
+///|
 test "variable name formatting" {
   let api_name = "user profile data"
-  
   inspect(@text.to_camel_case(api_name), content="userProfileData")
-  inspect(@text.to_pascal_case(api_name), content="UserProfileData") 
+  inspect(@text.to_pascal_case(api_name), content="UserProfileData")
   inspect(@text.to_snake_case(api_name), content="user_profile_data")
   inspect(@text.to_kebab_case(api_name), content="user-profile-data")
 }
