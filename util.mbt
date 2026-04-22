@@ -17,7 +17,7 @@ pub fn split_to_words(input : String) -> Array[String] {
     let mut current_word = ""
 
     // Skip non-alphanumeric characters
-    while i < len && not(is_alphanumeric(chars[i])) {
+    while i < len && !is_alphanumeric(chars[i]) {
       i = i + 1
     }
     if i >= len {
