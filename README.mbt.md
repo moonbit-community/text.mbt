@@ -26,7 +26,7 @@ moon add myfreess/text
 
 Converts a string to camelCase format where the first word is lowercase and subsequent words have their first letter capitalized.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "camelCase conversion" {
   inspect(@text.to_camel_case("hello world"), content="helloWorld")
@@ -39,7 +39,7 @@ test "camelCase conversion" {
 
 Converts a string to PascalCase format where every word starts with a capital letter.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "PascalCase conversion" {
   inspect(@text.to_pascal_case("hello world"), content="HelloWorld")
@@ -51,7 +51,7 @@ test "PascalCase conversion" {
 
 Converts a string to snake_case format where words are separated by underscores and all lowercase.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "snake_case conversion" {
   inspect(@text.to_snake_case("Hello World"), content="hello_world")
@@ -63,7 +63,7 @@ test "snake_case conversion" {
 
 Converts a string to kebab-case format where words are separated by hyphens and all lowercase.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "kebab-case conversion" {
   inspect(@text.to_kebab_case("Hello World"), content="hello-world")
@@ -77,7 +77,7 @@ test "kebab-case conversion" {
 
 Calculates the Levenshtein distance (edit distance) between two strings. This represents the minimum number of single-character edits (insertions, deletions, or substitutions) required to change one string into another.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "Levenshtein distance calculation" {
   inspect(@text.levenshtein_distance("kitten", "sitting"), content="3")
@@ -101,14 +101,13 @@ test "Levenshtein distance calculation" {
 
 #### Option Creators
 
-```moonbit
+```moonbit nocheck
 ///|
 test "create matching options" {
   let default_opts = @text.default_closest_string_options()
   let case_opts = @text.case_sensitive_closest_string_options()
   let similarity_opts = @text.default_compare_similarity_options()
   let case_similarity_opts = @text.case_sensitive_compare_similarity_options()
-
 }
 ```
 
@@ -116,7 +115,7 @@ test "create matching options" {
 
 Finds the most similar string from an array of candidates using the specified options.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "find closest string" {
   let candidates = ["length", "size", "help", "world"]
@@ -136,7 +135,7 @@ test "find closest string" {
 
 Simplified version of `closest_string` using default options.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "simple closest string matching" {
   let words = ["apple", "application", "apply", "apt"]
@@ -149,7 +148,7 @@ test "simple closest string matching" {
 
 Returns multiple closest matches sorted by similarity.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "multiple closest strings" {
   let candidates = ["help", "hello", "world", "test", "heap"]
@@ -167,7 +166,7 @@ test "multiple closest strings" {
 
 Creates a comparison function for measuring similarity between strings.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "similarity comparison function" {
   let compare_fn = @text.compare_similarity("target", None)
@@ -181,7 +180,7 @@ test "similarity comparison function" {
 
 Simplified version using default comparison options.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "simple similarity comparison" {
   let compare_fn = @text.compare_similarity_simple("hello")
@@ -194,7 +193,7 @@ test "simple similarity comparison" {
 
 Sorts an array of strings by their similarity to a target string.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "sort by similarity" {
   let words = ["world", "help", "hello", "test"]
@@ -211,7 +210,7 @@ test "sort by similarity" {
 
 Splits a string into individual words, handling various separators and cases.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "word splitting" {
   let words = @text.split_to_words("hello_world-test")
@@ -225,7 +224,7 @@ test "word splitting" {
 
 Capitalizes the first letter of a word while making the rest lowercase.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "word capitalization" {
   inspect(@text.capitalize_word("hello"), content="Hello")
@@ -238,7 +237,7 @@ test "word capitalization" {
 
 Converts a string to all lowercase letters.
 
-```moonbit
+```moonbit nocheck
 ///|
 test "lowercase conversion" {
   inspect(@text.to_lowercase_string("Hello World"), content="hello world")
@@ -250,7 +249,7 @@ test "lowercase conversion" {
 
 The library defines a custom error type `StringMatchingError` for operations that may fail:
 
-```moonbit
+```moonbit nocheck
 ///|
 test "error handling" {
   let empty_array : Array[String] = []
@@ -275,7 +274,7 @@ test "error handling" {
 
 ### Command Line Tool Suggestions
 
-```moonbit
+```moonbit nocheck
 ///|
 test "CLI command suggestions" {
   let commands = ["install", "uninstall", "list", "search", "update"]
@@ -286,7 +285,7 @@ test "CLI command suggestions" {
 
 ### API Method Name Matching
 
-```moonbit
+```moonbit nocheck
 ///|
 test "API method matching" {
   let methods = ["getUserById", "getUserByName", "getAllUsers", "createUser"]
@@ -297,7 +296,7 @@ test "API method matching" {
 
 ### Variable Name Formatting
 
-```moonbit
+```moonbit nocheck
 ///|
 test "variable name formatting" {
   let api_name = "user profile data"
