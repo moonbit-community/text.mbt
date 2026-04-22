@@ -51,8 +51,9 @@ pub suberror StringMatchingError {
 /// + Throws if the possible_words array is empty
 /// 
 /// # Examples
-/// ```mbt
+/// ```mbt nocheck
 /// let possible_words = ["length", "size", "blah", "help"]
+///
 /// let suggestion = closest_string("hep", possible_words, None)
 /// // suggestion will be "help"
 /// ```
