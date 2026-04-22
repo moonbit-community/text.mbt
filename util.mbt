@@ -40,10 +40,7 @@ pub fn split_to_words(input : String) -> Array[String] {
       if i < len && is_lowercase(chars[i]) && current_word.length() > 1 {
         // Leave the last uppercase letter for the next word
         let last_char = current_word.to_array()[current_word.length() - 1]
-        current_word = current_word.substring(
-          start=0,
-          end=current_word.length() - 1,
-        )
+        current_word = current_word[:current_word.length() - 1].to_string()
         words.push(current_word)
 
         // Start new word
