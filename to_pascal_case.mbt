@@ -19,7 +19,7 @@
 /// let _ = to_pascal_case("htmlElement") // "HtmlElement"
 /// ```
 pub fn to_pascal_case(input : String) -> String {
-  let trimmed : String = input.trim(" ").to_string()
+  let trimmed : String = input.trim(chars=" ").to_string()
   if trimmed.length() == 0 {
     return ""
   }

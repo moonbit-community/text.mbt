@@ -18,7 +18,7 @@
 /// let _ = to_snake_case("HTMLElement") // "html_element"
 /// ```
 pub fn to_snake_case(input : String) -> String {
-  let trimmed : String = input.trim(" ").to_string()
+  let trimmed : String = input.trim(chars=" ").to_string()
   if trimmed.length() == 0 {
     return ""
   }

@@ -19,7 +19,7 @@
 /// let _ = to_camel_case("HTMLElement") // "htmlElement"
 /// ```
 pub fn to_camel_case(input : String) -> String {
-  let trimmed : String = input.trim(" ").to_string()
+  let trimmed : String = input.trim(chars=" ").to_string()
   if trimmed.length() == 0 {
     return ""
   }
