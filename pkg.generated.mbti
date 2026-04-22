@@ -2,44 +2,46 @@
 package "myfreess/text"
 
 // Values
-fn capitalize_word(String) -> String
+pub fn capitalize_word(String) -> String
 
-fn case_sensitive_closest_string_options() -> ClosestStringOptions
+pub fn case_sensitive_closest_string_options() -> ClosestStringOptions
 
-fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions
+pub fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions
 
-fn closest_string(String, Array[String], ClosestStringOptions?) -> String raise StringMatchingError
+pub fn closest_string(String, Array[String], ClosestStringOptions?) -> String raise StringMatchingError
 
-fn closest_string_simple(String, Array[String]) -> String raise StringMatchingError
+pub fn closest_string_simple(String, Array[String]) -> String raise StringMatchingError
 
-fn closest_strings(String, Array[String], Int, ClosestStringOptions?) -> Array[String]
+pub fn closest_strings(String, Array[String], Int, ClosestStringOptions?) -> Array[String]
 
-fn compare_similarity(String, CompareSimilarityOptions?) -> (String, String) -> Int
+pub fn compare_similarity(String, CompareSimilarityOptions?) -> (String, String) -> Int
 
-fn compare_similarity_simple(String) -> (String, String) -> Int
+pub fn compare_similarity_simple(String) -> (String, String) -> Int
 
-fn default_closest_string_options() -> ClosestStringOptions
+pub fn default_closest_string_options() -> ClosestStringOptions
 
-fn default_compare_similarity_options() -> CompareSimilarityOptions
+pub fn default_compare_similarity_options() -> CompareSimilarityOptions
 
-fn levenshtein_distance(String, String) -> Int
+pub fn levenshtein_distance(String, String) -> Int
 
-fn sort_by_similarity(Array[String], String, CompareSimilarityOptions?) -> Array[String]
+pub fn sort_by_similarity(Array[String], String, CompareSimilarityOptions?) -> Array[String]
 
-fn split_to_words(String) -> Array[String]
+pub fn split_to_words(String) -> Array[String]
 
-fn to_camel_case(String) -> String
+pub fn to_camel_case(String) -> String
 
-fn to_kebab_case(String) -> String
+pub fn to_kebab_case(String) -> String
 
-fn to_lowercase_string(String) -> String
+pub fn to_lowercase_string(String) -> String
 
-fn to_pascal_case(String) -> String
+pub fn to_pascal_case(String) -> String
 
-fn to_snake_case(String) -> String
+pub fn to_snake_case(String) -> String
 
 // Errors
-pub suberror StringMatchingError String
+pub suberror StringMatchingError {
+  StringMatchingError(String)
+}
 
 // Types and methods
 pub struct ClosestStringOptions {
