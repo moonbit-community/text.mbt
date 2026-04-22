@@ -35,7 +35,9 @@ pub fn case_sensitive_closest_string_options() -> ClosestStringOptions {
 }
 
 ///|
-pub suberror StringMatchingError String
+pub suberror StringMatchingError {
+  StringMatchingError(String)
+}
 
 ///|
 /// Find the most similar string from a string array
