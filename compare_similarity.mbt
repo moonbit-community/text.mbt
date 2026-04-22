@@ -152,7 +152,7 @@ test "sort_by_similarity" {
 ///|
 /// Helper function: assert boolean value is true
 fn assert_true(value : Bool) -> Unit {
-  if not(value) {
+  if !value {
     abort("Expected true, got false")
   }
 }
