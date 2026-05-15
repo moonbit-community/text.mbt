@@ -160,25 +160,25 @@ pub fn to_lowercase_string(s : String) -> String {
 /// Test functions
 test "split_to_words" {
   let words1 = split_to_words("helloWorld")
-  assert_eq(words1, ["hello", "World"])
+  @debug.assert_eq(words1, ["hello", "World"])
   let words2 = split_to_words("HTMLElement")
-  assert_eq(words2, ["HTML", "Element"])
+  @debug.assert_eq(words2, ["HTML", "Element"])
   let words3 = split_to_words("deno_is_awesome")
-  assert_eq(words3, ["deno", "is", "awesome"])
+  @debug.assert_eq(words3, ["deno", "is", "awesome"])
   let words4 = split_to_words("test123code")
-  assert_eq(words4, ["test", "123", "code"])
+  @debug.assert_eq(words4, ["test", "123", "code"])
 }
 
 ///|
 test "capitalize_word" {
-  assert_eq(capitalize_word("hello"), "Hello")
-  assert_eq(capitalize_word("WORLD"), "World")
-  assert_eq(capitalize_word(""), "")
+  @debug.assert_eq(capitalize_word("hello"), "Hello")
+  @debug.assert_eq(capitalize_word("WORLD"), "World")
+  @debug.assert_eq(capitalize_word(""), "")
 }
 
 ///|
 test "to_lowercase_string" {
-  assert_eq(to_lowercase_string("Hello"), "hello")
-  assert_eq(to_lowercase_string("WORLD"), "world")
-  assert_eq(to_lowercase_string("Test123"), "test123")
+  @debug.assert_eq(to_lowercase_string("Hello"), "hello")
+  @debug.assert_eq(to_lowercase_string("WORLD"), "world")
+  @debug.assert_eq(to_lowercase_string("Test123"), "test123")
 }
