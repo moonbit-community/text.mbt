@@ -125,7 +125,7 @@ test "compare_similarity_basic" {
   assert_true(cmp("hi", "hello") < 0)
 
   // Same strings should have distance 0
-  assert_eq(cmp("test", "test"), 0)
+  @debug.assert_eq(cmp("test", "test"), 0)
 }
 
 ///|
@@ -143,10 +143,10 @@ test "sort_by_similarity" {
   let sorted = sort_by_similarity(words, "hep", None)
 
   // "help" should be most similar
-  assert_eq(sorted[0], "help")
+  @debug.assert_eq(sorted[0], "help")
 
   // Original array should not be modified
-  assert_eq(words, ["hi", "hello", "help"])
+  @debug.assert_eq(words, ["hi", "hello", "help"])
 }
 
 ///|
