@@ -8,20 +8,70 @@ test "string_conversion_tests" {
   let original = "hello_world_example"
 
   // Test various format conversions
-  debug_inspect(to_camel_case(original), content="helloWorldExample")
-  debug_inspect(to_kebab_case(original), content="hello-world-example")
-  debug_inspect(to_pascal_case(original), content="HelloWorldExample")
-  debug_inspect(to_snake_case(original), content="hello_world_example")
+  debug_inspect(
+    to_camel_case(original),
+    content=(
+      #|"helloWorldExample"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(original),
+    content=(
+      #|"hello-world-example"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(original),
+    content=(
+      #|"HelloWorldExample"
+    ),
+  )
+  debug_inspect(
+    to_snake_case(original),
+    content=(
+      #|"hello_world_example"
+    ),
+  )
 
   // Test empty string
-  debug_inspect(to_camel_case(""), content="")
-  debug_inspect(to_kebab_case(""), content="")
-  debug_inspect(to_pascal_case(""), content="")
-  debug_inspect(to_snake_case(""), content="")
+  debug_inspect(
+    to_camel_case(""),
+    content=(
+      #|""
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(""),
+    content=(
+      #|""
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(""),
+    content=(
+      #|""
+    ),
+  )
+  debug_inspect(
+    to_snake_case(""),
+    content=(
+      #|""
+    ),
+  )
 
   // Test single word
-  debug_inspect(to_camel_case("hello"), content="hello")
-  debug_inspect(to_pascal_case("hello"), content="Hello")
+  debug_inspect(
+    to_camel_case("hello"),
+    content=(
+      #|"hello"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case("hello"),
+    content=(
+      #|"Hello"
+    ),
+  )
 }
 
 ///|
@@ -39,14 +89,44 @@ test "complex_conversion_tests" {
   )
 
   // Test conversion results
-  debug_inspect(to_camel_case(complex), content="xmlHttpRequest")
-  debug_inspect(to_kebab_case(complex), content="xml-http-request")
-  debug_inspect(to_pascal_case(complex), content="XmlHttpRequest")
-  debug_inspect(to_snake_case(complex), content="xml_http_request")
+  debug_inspect(
+    to_camel_case(complex),
+    content=(
+      #|"xmlHttpRequest"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(complex),
+    content=(
+      #|"xml-http-request"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(complex),
+    content=(
+      #|"XmlHttpRequest"
+    ),
+  )
+  debug_inspect(
+    to_snake_case(complex),
+    content=(
+      #|"xml_http_request"
+    ),
+  )
 
   // Test other complex cases
-  debug_inspect(to_camel_case("API_Version_2"), content="apiVersion2")
-  debug_inspect(to_snake_case("getUserInfo"), content="get_user_info")
+  debug_inspect(
+    to_camel_case("API_Version_2"),
+    content=(
+      #|"apiVersion2"
+    ),
+  )
+  debug_inspect(
+    to_snake_case("getUserInfo"),
+    content=(
+      #|"get_user_info"
+    ),
+  )
 }
 
 ///|
@@ -75,8 +155,18 @@ test "similarity_sorting_tests" {
   let sorted = sort_by_similarity(words, target, None)
 
   // Verify sorting results (most similar should be first)
-  debug_inspect(sorted[0], content="help") // distance is 1
-  debug_inspect(sorted[1], content="heap") // distance is 2
+  debug_inspect(
+    sorted[0],
+    content=(
+      #|"help"
+    ),
+  ) // distance is 1
+  debug_inspect(
+    sorted[1],
+    content=(
+      #|"heap"
+    ),
+  ) // distance is 2
 
   // Verify complete sorting (possible order)
   debug_inspect(sorted.length(), content="7")
@@ -98,25 +188,60 @@ test "closest_string_tests" {
   let candidates = ["length", "size", "width", "height", "help", "depth"]
 
   // Test single closest string search
-  debug_inspect(closest_string_simple("hep", candidates), content="help")
-  debug_inspect(closest_string_simple("len", candidates), content="length")
-  debug_inspect(closest_string_simple("siz", candidates), content="size")
-  debug_inspect(closest_string_simple("heigh", candidates), content="height")
+  debug_inspect(
+    closest_string_simple("hep", candidates),
+    content=(
+      #|"help"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple("len", candidates),
+    content=(
+      #|"length"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple("siz", candidates),
+    content=(
+      #|"size"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple("heigh", candidates),
+    content=(
+      #|"height"
+    ),
+  )
 
   // Test searching for multiple closest strings
   let query = "hep"
   let top3 = closest_strings(query, candidates, 3, None)
-  debug_inspect(top3[0], content="help")
+  debug_inspect(
+    top3[0],
+    content=(
+      #|"help"
+    ),
+  )
   debug_inspect(top3.length(), content="3")
 
   // Test case insensitive
   let mixed_case = ["Help", "HELLO", "world"]
-  debug_inspect(closest_string_simple("help", mixed_case), content="Help")
+  debug_inspect(
+    closest_string_simple("help", mixed_case),
+    content=(
+      #|"Help"
+    ),
+  )
 
   // Test case sensitive option
   let opts = case_sensitive_closest_string_options()
   let case_sensitive_result = closest_string("Help", mixed_case, Some(opts))
-  debug_inspect(case_sensitive_result, content="Help")
+  debug_inspect(
+    case_sensitive_result,
+    content=(
+      #|"Help"
+    ),
+  )
 }
 
 ///|
@@ -124,60 +249,186 @@ test "closest_string_tests" {
 test "real_world_usage_tests" {
   // 1. API naming conversion test
   let api_functions = ["getUserProfile", "createNewPost", "deleteOldFiles"]
-  debug_inspect(to_snake_case(api_functions[0]), content="get_user_profile")
-  debug_inspect(to_kebab_case(api_functions[0]), content="get-user-profile")
-  debug_inspect(to_snake_case(api_functions[1]), content="create_new_post")
-  debug_inspect(to_kebab_case(api_functions[1]), content="create-new-post")
-  debug_inspect(to_snake_case(api_functions[2]), content="delete_old_files")
-  debug_inspect(to_kebab_case(api_functions[2]), content="delete-old-files")
+  debug_inspect(
+    to_snake_case(api_functions[0]),
+    content=(
+      #|"get_user_profile"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(api_functions[0]),
+    content=(
+      #|"get-user-profile"
+    ),
+  )
+  debug_inspect(
+    to_snake_case(api_functions[1]),
+    content=(
+      #|"create_new_post"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(api_functions[1]),
+    content=(
+      #|"create-new-post"
+    ),
+  )
+  debug_inspect(
+    to_snake_case(api_functions[2]),
+    content=(
+      #|"delete_old_files"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case(api_functions[2]),
+    content=(
+      #|"delete-old-files"
+    ),
+  )
 
   // 2. Configuration field conversion test
   let config_fields = ["database_url", "max_connections", "timeout_seconds"]
-  debug_inspect(to_camel_case(config_fields[0]), content="databaseUrl")
-  debug_inspect(to_pascal_case(config_fields[0]), content="DatabaseUrl")
-  debug_inspect(to_camel_case(config_fields[1]), content="maxConnections")
-  debug_inspect(to_pascal_case(config_fields[1]), content="MaxConnections")
-  debug_inspect(to_camel_case(config_fields[2]), content="timeoutSeconds")
-  debug_inspect(to_pascal_case(config_fields[2]), content="TimeoutSeconds")
+  debug_inspect(
+    to_camel_case(config_fields[0]),
+    content=(
+      #|"databaseUrl"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(config_fields[0]),
+    content=(
+      #|"DatabaseUrl"
+    ),
+  )
+  debug_inspect(
+    to_camel_case(config_fields[1]),
+    content=(
+      #|"maxConnections"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(config_fields[1]),
+    content=(
+      #|"MaxConnections"
+    ),
+  )
+  debug_inspect(
+    to_camel_case(config_fields[2]),
+    content=(
+      #|"timeoutSeconds"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(config_fields[2]),
+    content=(
+      #|"TimeoutSeconds"
+    ),
+  )
 
   // 3. File name similarity matching (typo correction) test
   let files = ["index.html", "main.css", "app.js", "readme.txt", "config.json"]
   let typos = ["inde.html", "main.cs", "ap.js", "readm.txt"]
-  debug_inspect(closest_string_simple(typos[0], files), content="index.html")
-  debug_inspect(closest_string_simple(typos[1], files), content="main.css")
-  debug_inspect(closest_string_simple(typos[2], files), content="app.js")
-  debug_inspect(closest_string_simple(typos[3], files), content="readme.txt")
+  debug_inspect(
+    closest_string_simple(typos[0], files),
+    content=(
+      #|"index.html"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple(typos[1], files),
+    content=(
+      #|"main.css"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple(typos[2], files),
+    content=(
+      #|"app.js"
+    ),
+  )
+  debug_inspect(
+    closest_string_simple(typos[3], files),
+    content=(
+      #|"readme.txt"
+    ),
+  )
 }
 
 ///|
 /// Test: Edge cases and error handling
 test "edge_cases_and_error_handling" {
   // Test empty string input
-  debug_inspect(to_camel_case("   "), content="")
-  debug_inspect(to_snake_case("   "), content="")
+  debug_inspect(
+    to_camel_case("   "),
+    content=(
+      #|""
+    ),
+  )
+  debug_inspect(
+    to_snake_case("   "),
+    content=(
+      #|""
+    ),
+  )
 
   // Test single character
-  debug_inspect(to_camel_case("a"), content="a")
-  debug_inspect(to_pascal_case("a"), content="A")
-  debug_inspect(to_kebab_case("A"), content="a")
+  debug_inspect(
+    to_camel_case("a"),
+    content=(
+      #|"a"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case("a"),
+    content=(
+      #|"A"
+    ),
+  )
+  debug_inspect(
+    to_kebab_case("A"),
+    content=(
+      #|"a"
+    ),
+  )
 
   // Test numbers and special characters
-  debug_inspect(to_camel_case("test123code"), content="test123Code")
-  debug_inspect(to_snake_case("test-123-code"), content="test_123_code")
+  debug_inspect(
+    to_camel_case("test123code"),
+    content=(
+      #|"test123Code"
+    ),
+  )
+  debug_inspect(
+    to_snake_case("test-123-code"),
+    content=(
+      #|"test_123_code"
+    ),
+  )
 
   // Test strings already in target format
-  debug_inspect(to_camel_case("alreadyCamelCase"), content="alreadyCamelCase")
+  debug_inspect(
+    to_camel_case("alreadyCamelCase"),
+    content=(
+      #|"alreadyCamelCase"
+    ),
+  )
   debug_inspect(
     to_snake_case("already_snake_case"),
-    content="already_snake_case",
+    content=(
+      #|"already_snake_case"
+    ),
   )
   debug_inspect(
     to_kebab_case("already-kebab-case"),
-    content="already-kebab-case",
+    content=(
+      #|"already-kebab-case"
+    ),
   )
   debug_inspect(
     to_pascal_case("AlreadyPascalCase"),
-    content="AlreadyPascalCase",
+    content=(
+      #|"AlreadyPascalCase"
+    ),
   )
 }
 
@@ -188,13 +439,25 @@ test "performance_edge_cases" {
   let long_string = "this_is_a_very_long_string_with_many_words_to_test_performance"
   debug_inspect(
     to_camel_case(long_string),
-    content="thisIsAVeryLongStringWithManyWordsToTestPerformance",
+    content=(
+      #|"thisIsAVeryLongStringWithManyWordsToTestPerformance"
+    ),
   )
 
   // Test repeated patterns
   let repeated = "test_test_test"
-  debug_inspect(to_camel_case(repeated), content="testTestTest")
-  debug_inspect(to_pascal_case(repeated), content="TestTestTest")
+  debug_inspect(
+    to_camel_case(repeated),
+    content=(
+      #|"testTestTest"
+    ),
+  )
+  debug_inspect(
+    to_pascal_case(repeated),
+    content=(
+      #|"TestTestTest"
+    ),
+  )
 
   // Test distance of same-length strings
   debug_inspect(levenshtein_distance("abcd", "efgh"), content="4")
