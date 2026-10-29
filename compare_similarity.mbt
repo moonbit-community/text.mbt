@@ -13,7 +13,7 @@ pub struct CompareSimilarityOptions {
   /// Custom comparison function
   /// Parameters: (a, b) -> distance between two strings
   /// Default value: levenshtein_distance
-  compare_fn : (String, String) -> Int
+  compare_fn : (String, String) -> Int32
 }
 
 ///|
@@ -54,19 +54,19 @@ pub fn case_sensitive_compare_similarity_options() -> CompareSimilarityOptions {
 pub fn compare_similarity(
   given_word : String,
   options : CompareSimilarityOptions?,
-) -> (String, String) -> Int {
+) -> (String, String) -> Int32 {
   let opts = match options {
     Some(opts) => opts
     None => default_compare_similarity_options()
   }
   let compare_fn = opts.compare_fn
   if opts.case_sensitive {
-    fn(a : String, b : String) -> Int {
+    fn(a : String, b : String) -> Int32 {
       compare_fn(given_word, a) - compare_fn(given_word, b)
     }
   } else {
     let given_lower = to_lowercase_string(given_word)
-    fn(a : String, b : String) -> Int {
+    fn(a : String, b : String) -> Int32 {
       let a_lower = to_lowercase_string(a)
       let b_lower = to_lowercase_string(b)
       compare_fn(given_lower, a_lower) - compare_fn(given_lower, b_lower)
@@ -78,7 +78,7 @@ pub fn compare_similarity(
 /// Simplified version using default options
 pub fn compare_similarity_simple(
   given_word : String,
-) -> (String, String) -> Int {
+) -> (String, String) -> Int32 {
   compare_similarity(given_word, None)
 }
 
@@ -95,7 +95,7 @@ pub fn sort_by_similarity(
   options : CompareSimilarityOptions?,
 ) -> Array[String] {
   let comparator = compare_similarity(given_word, options)
-  let sorted_words = Array::new()
+  let sorted_words = Array()
   for word in words {
     sorted_words.push(word)
   }
