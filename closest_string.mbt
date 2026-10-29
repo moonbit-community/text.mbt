@@ -13,7 +13,7 @@ pub struct ClosestStringOptions {
   /// Custom comparison function
   /// Parameters: (a, b) -> distance between two strings
   /// Default value: levenshtein_distance
-  compare_fn : (String, String) -> Int
+  compare_fn : (String, String) -> Int32
 }
 
 ///|
@@ -111,7 +111,7 @@ pub fn closest_string_simple(
 pub fn closest_strings(
   given_word : String,
   possible_words : Array[String],
-  count : Int,
+  count : Int32,
   options : ClosestStringOptions?,
 ) -> Array[String] {
   if possible_words.length() == 0 {
@@ -128,7 +128,7 @@ pub fn closest_strings(
     None => None
   }
   let sorted = sort_by_similarity(possible_words, given_word, compare_opts)
-  let result = Array::new()
+  let result = Array()
   let max_count = if count > sorted.length() { sorted.length() } else { count }
   for i = 0; i < max_count; i = i + 1 {
     result.push(sorted[i])

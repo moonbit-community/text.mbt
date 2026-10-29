@@ -20,7 +20,7 @@
 /// let _ = levenshtein_distance("aa", "bb") // returns 2
 /// let _ = levenshtein_distance("hello", "hallo") // returns 1
 /// ```
-pub fn levenshtein_distance(str1 : String, str2 : String) -> Int {
+pub fn levenshtein_distance(str1 : String, str2 : String) -> Int32 {
   let t = str1.to_array()
   let p = str2.to_array()
 
@@ -35,7 +35,7 @@ pub fn levenshtein_distance(str1 : String, str2 : String) -> Int {
 ///|
 /// Concrete implementation of Levenshtein distance
 /// Uses dynamic programming algorithm
-fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int {
+fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int32 {
   let n = t.length()
   let m = p.length()
   if m == 0 {
@@ -53,7 +53,7 @@ fn levenshtein_distance_impl(t : Array[Char], p : Array[Char]) -> Int {
 ///|
 /// Myers algorithm implementation (suitable for short strings)
 /// This is a bit-vector based Myers algorithm implementation
-fn myers32(t : Array[Char], p : Array[Char]) -> Int {
+fn myers32(t : Array[Char], p : Array[Char]) -> Int32 {
   let n = t.length()
   let m = p.length()
 
@@ -91,7 +91,7 @@ fn myers32(t : Array[Char], p : Array[Char]) -> Int {
 
 ///|
 /// Classic dynamic programming Levenshtein distance algorithm
-fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int {
+fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int32 {
   let n = t.length()
   let m = p.length()
 
@@ -123,7 +123,7 @@ fn classic_levenshtein(t : Array[Char], p : Array[Char]) -> Int {
 
 ///|
 /// Calculate the minimum of three numbers
-fn min3(a : Int, b : Int, c : Int) -> Int {
+fn min3(a : Int32, b : Int32, c : Int32) -> Int32 {
   let temp = if a < b { a } else { b }
   if temp < c {
     temp

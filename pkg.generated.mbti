@@ -12,17 +12,17 @@ pub fn closest_string(String, Array[String], ClosestStringOptions?) -> String ra
 
 pub fn closest_string_simple(String, Array[String]) -> String raise StringMatchingError
 
-pub fn closest_strings(String, Array[String], Int, ClosestStringOptions?) -> Array[String]
+pub fn closest_strings(String, Array[String], Int32, ClosestStringOptions?) -> Array[String]
 
-pub fn compare_similarity(String, CompareSimilarityOptions?) -> (String, String) -> Int
+pub fn compare_similarity(String, CompareSimilarityOptions?) -> (String, String) -> Int32
 
-pub fn compare_similarity_simple(String) -> (String, String) -> Int
+pub fn compare_similarity_simple(String) -> (String, String) -> Int32
 
 pub fn default_closest_string_options() -> ClosestStringOptions
 
 pub fn default_compare_similarity_options() -> CompareSimilarityOptions
 
-pub fn levenshtein_distance(String, String) -> Int
+pub fn levenshtein_distance(String, String) -> Int32
 
 pub fn sort_by_similarity(Array[String], String, CompareSimilarityOptions?) -> Array[String]
 
@@ -46,15 +46,14 @@ pub suberror StringMatchingError {
 // Types and methods
 pub struct ClosestStringOptions {
   case_sensitive : Bool
-  compare_fn : (String, String) -> Int
+  compare_fn : (String, String) -> Int32
 }
 
 pub struct CompareSimilarityOptions {
   case_sensitive : Bool
-  compare_fn : (String, String) -> Int
+  compare_fn : (String, String) -> Int32
 }
 
 // Type aliases
 
 // Traits
-
